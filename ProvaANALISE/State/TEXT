@@ -1,0 +1,9 @@
+Padrão de Projeto: State
+Explicação
+O padrão State é um padrão de projeto comportamental que permite a um objeto alterar seu comportamento quando seu estado interno muda. O objeto parecerá ter mudado de classe. A ideia central é encapsular os comportamentos associados a um estado particular em objetos separados. Em vez de usar condicionais (if/else ou switch) gigantescas no objeto principal para verificar seu estado atual e decidir o que fazer, a lógica é delegada para o objeto que representa o estado atual.
+
+Quando usar?
+
+Quando o comportamento de um objeto depende de seu estado e precisa mudar em tempo de execução.
+
+Quando a lógica de máquina de estados de um objeto é muito complexa, com muitos condicionais.

@@ -1,0 +1,30 @@
+1. Padrão de Projeto: State (Estado do Documento)
+O objetivo deste código é permitir que um objeto Documento mude seu comportamento conforme seu estado interno (Rascunho, EmRevisao, Aprovado) muda.
+
+Explicação do Código
+EstadoDocumento.java (Interface): É o "contrato" que todos os estados devem seguir. Define as ações possíveis que podem acontecer com um Documento (no caso, publicar e aprovar).
+
+Documento.java (Classe de Contexto): Esta é a classe principal que o cliente usa. Ela não sabe a lógica de nenhum estado. Ela apenas "guarda" uma referência para o seu estado atual (private EstadoDocumento estado). Quando seus métodos (publicar() ou aprovar()) são chamados, ela simplesmente delega a chamada para o objeto de estado que ela está segurando no momento. Ex: estado.publicar(this). Ela também tem um setEstado(), que permite que os estados (ou o próprio contexto) mudem o estado atual.
+
+EstadoRascunho.java / EstadoEmRevisao.java / EstadoAprovado.java (Estados Concretos): Aqui está a "inteligência" do padrão. Cada classe implementa a lógica específica daquele estado.
+
+EstadoRascunho: Permite publicar() (e, ao fazer isso, muda o estado do documento para EstadoEmRevisao). Não permite aprovar().
+
+EstadoEmRevisao: Não permite publicar() de novo, mas permite aprovar() (e muda o estado para EstadoAprovado).
+
+EstadoAprovado: Não permite mais nenhuma ação, pois é o estado final.
+
+TesteState.java (Cliente): Apenas simula o uso. Ele cria um Documento e tenta chamar os métodos em sequência, demonstrando como o comportamento do objeto doc muda, mesmo que o cliente esteja chamando os mesmos métodos (doc.aprovar(), doc.publicar()).
+
+Perguntas Prováveis do Professor
+Pergunta de Motivação: "Por que você usou o padrão State aqui? Qual é a alternativa a esse padrão e por que o State é melhor neste caso?"
+
+Resposta Esperada: "A alternativa seria usar uma variável de estado (ex: um int ou String status) dentro da classe Documento e, em cada método (publicar(), aprovar()), ter um switch-case ou um if-else gigante para verificar o status atual. O padrão State é melhor porque ele remove essa lógica condicional complexa da classe Documento, tornando-a mais limpa. Além disso, cada estado fica encapsulado em sua própria classe, facilitando a manutenção e a adição de novos estados (como EstadoReprovado) sem precisar alterar a classe Documento." (Isso demonstra conhecimento do Princípio Aberto/Fechado).
+
+Pergunta de Estrutura: "Na sua classe Documento, o atributo estado é do tipo EstadoDocumento (a interface) e não de uma classe concreta. Por que isso é importante?"
+
+Resposta Esperada: "Isso é fundamental para o padrão. Usar a interface permite que o Documento trate todos os estados de forma igual (polimorfismo). Ele não precisa saber qual estado concreto ele possui, apenas que ele tem um estado que sabe como publicar e aprovar. Isso permite que o estado seja trocado em tempo de execução por qualquer outra classe que implemente a mesma interface."
+
+Pergunta de Mecanismo: "No seu código, quem é responsável por mudar o estado? O Documento ou o próprio Estado?"
+
+Resposta Esperada: "Nesta implementação, o próprio Estado Concreto é responsável pela transição. Por exemplo, no método publicar() da classe EstadoRascunho, ele mesmo chama doc.setEstado(new EstadoEmRevisao()). Para fazer isso, o Documento (Contexto) precisa passar a si mesmo (this) como parâmetro para o método do estado, para que o estado possa chamar o setEstado do contexto."

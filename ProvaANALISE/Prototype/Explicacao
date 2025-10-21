@@ -1,0 +1,22 @@
+2. Padrão de Projeto: Prototype (Clonagem de Formas)
+O objetivo deste código é criar novos objetos (Circulo, Retangulo) copiando (clonando) objetos existentes, em vez de criá-los do zero.
+
+Explicação do Código
+Forma.java (Interface Prototype): Define o contrato do protótipo. Exige que qualquer Forma tenha um método clonar(). Ela também extends Cloneable, que é uma "interface marcadora" do Java, necessária para habilitar o método Object.clone().
+
+Circulo.java / Retangulo.java (Protótipos Concretos): São as classes que serão copiadas. Elas implementam Forma. O método mais importante é o clonar(), que neste caso usa super.clone(). super.clone() é um método nativo da classe Object do Java que cria uma cópia rasa (shallow copy) do objeto.
+
+TestePrototype.java (Cliente): Primeiro, ele cria os "objetos-molde" (protótipos): circuloVermelho e retanguloAzul. Depois, em vez de usar new Circulo("Vermelho") de novo, ele simplesmente chama circuloVermelho.clonar(). O teste (circuloVermelho == novoCirculo) prova que eles são objetos diferentes na memória (retorna false), embora tenham os mesmos dados.
+
+Perguntas Prováveis do Professor
+Pergunta de Motivação: "Neste seu exemplo, criar um new Circulo("Vermelho") parece tão simples quanto chamar circuloVermelho.clonar(). Qual é a vantagem real de usar o Prototype?"
+
+Resposta Esperada: "Neste exemplo simples, a vantagem não é óbvia. Mas, imagine que para criar um objeto Forma fosse necessário fazer uma consulta cara no banco de dados ou carregar um arquivo pesado da rede, o que poderia levar segundos. O new seria um processo muito lento. Com o Prototype, nós faríamos esse processo lento uma vez para criar o protótipo. Todas as cópias subsequentes, via clonar(), seriam quase instantâneas, pois apenas copiariam os dados que já estão na memória."
+
+Pergunta de Mecanismo (Avançada): "Você usou super.clone(), que faz uma 'shallow copy' (cópia rasa). Se sua classe Circulo tivesse um atributo que fosse outro objeto (por exemplo, private Coordenadas centro), o que aconteceria?"
+
+Resposta Esperada: "Na 'shallow copy', apenas a referência do objeto Coordenadas seria copiada. Isso significa que tanto o Circulo original quanto o Circulo clonado apontariam para o mesmo objeto Coordenadas na memória. Se eu mudasse as coordenadas do clone, as do original também mudariam, o que geralmente não é desejado. Para corrigir isso, eu teria que implementar uma 'deep copy' (cópia profunda): no método clonar(), eu primeiro chamaria super.clone() e, em seguida, criaria manualmente um novo objeto Coordenadas para o clone, copiando os valores do original."
+
+Pergunta de Estrutura: "O que é essa interface Cloneable que você estendeu? Ela não tem nenhum método. Por que ela é necessária?"
+
+Resposta Esperada: "É uma 'interface marcadora' (marker interface) do Java. Ela serve como um "aviso" para a JVM de que a classe que a implementa tem a intenção de ser clonada. Se a classe Circulo não implementasse Cloneable (diretamente ou via Forma), a chamada super.clone() lançaria uma exceção CloneNotSupportedException."

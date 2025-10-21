@@ -1,0 +1,8 @@
+Explicação
+O padrão Prototype é um padrão de projeto criacional que permite criar novos objetos copiando um objeto existente, conhecido como protótipo, em vez de criar o objeto do zero. Isso é útil quando o custo de criação de um objeto é mais caro ou complexo do que copiá-lo. A ideia é ter um objeto "molde" e, quando precisarmos de um novo objeto igual, simplesmente clonamos o molde.
+
+Quando usar?
+
+Quando a criação de uma instância de uma classe é cara (em termos de tempo ou recursos).
+
+Quando você precisa de uma cópia de um objeto que pode ter várias configurações, e não quer recriá-lo do zero.

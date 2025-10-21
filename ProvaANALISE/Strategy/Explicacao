@@ -1,0 +1,28 @@
+3. Padrão de Projeto: Strategy (Cálculo de Frete)
+O objetivo deste código é permitir que um CalculadoraFrete use diferentes algoritmos (estratégias) de cálculo sem que ele precise saber os detalhes de cada um.
+
+Explicação do Código
+EstrategiaFrete.java (Interface da Estratégia): É o "contrato" dos algoritmos. Define que qualquer estratégia de frete deve ter um método calcular(double peso) que retorna um double.
+
+FreteSedex.java / FretePAC.java / FreteJadlog.java (Estratégias Concretas): São os algoritmos em si. Cada classe implementa a interface e contém a lógica de cálculo específica (ex: peso * 1.5 + 10). Elas são independentes umas das outras.
+
+CalculadoraFrete.java (Classe de Contexto): Esta é a classe que o cliente usa. Ela não sabe calcular nenhum frete. Ela apenas "guarda" uma referência para a estratégia atual (private EstrategiaFrete estrategia). Ela tem um setEstrategia() que permite ao cliente "injetar" o algoritmo desejado. Quando calcularFrete() é chamado, ela simplesmente delega a chamada para a estratégia que ela está segurando (estrategia.calcular(peso)).
+
+TesteStrategy.java (Cliente): Mostra o poder do padrão. Ele cria uma única CalculadoraFrete. Então, ele muda o comportamento dessa calculadora em tempo de execução, simplesmente passando objetos de estratégia diferentes para o método setEstrategia().
+
+Perguntas Prováveis do Professor
+Pergunta de Motivação: "Qual é a principal vantagem de design que você ganhou ao usar o padrão Strategy aqui?"
+
+Resposta Esperada: "A principal vantagem é o Princípio Aberto/Fechado (O do SOLID). A classe CalculadoraFrete está 'fechada' para modificações (eu nunca mais preciso mexer nela), mas está 'aberta' para extensões. Se a empresa quiser adicionar um novo frete (ex: 'Uber Entregas'), eu só preciso criar uma nova classe FreteUberEntregas que implemente EstrategiaFrete. O cliente poderá usá-la imediatamente com a CalculadoraFrete existente, sem que eu precise alterar uma linha de código da calculadora."
+
+Pergunta de Estrutura: "No seu padrão Strategy, quem decide qual algoritmo usar? O Contexto (CalculadoraFrete) ou o Cliente (TesteStrategy)?"
+
+Resposta Esperada: "Nesta implementação, o Cliente (TesteStrategy) é quem decide. Ele instancia a estratégia concreta (new FreteSedex()) e a 'injeta' no contexto através do setEstrategia(). Isso dá total flexibilidade ao cliente para trocar o algoritmo quando ele quiser."
+
+Pergunta Comparativa (Muito Comum): "O padrão State e o padrão Strategy parecem muito similares estruturalmente (ambos usam uma interface e delegam o comportamento para classes concretas). Qual é a principal diferença conceitual entre eles?"
+
+Resposta Esperada: "Essa é uma ótima pergunta. A principal diferença é a intenção.
+
+No State, o foco é gerenciar uma 'máquina de estados'. O objeto muda seu comportamento porque seu estado interno mudou. Geralmente, são os próprios estados que controlam as transições (ex: Rascunho decide ir para Revisão).
+
+No Strategy, o foco é trocar algoritmos. O objeto (Contexto) não tem um 'estado', ele apenas tem um algoritmo que pode ser substituído. Geralmente, é o Cliente que decide qual algoritmo usar e quando trocá-lo. O Strategy não sabe das outras estratégias e não gerencia transições."

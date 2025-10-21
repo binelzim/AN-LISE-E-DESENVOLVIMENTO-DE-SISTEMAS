@@ -1,0 +1,8 @@
+Explicação
+O padrão Strategy é um padrão de projeto comportamental que permite definir uma família de algoritmos, encapsular cada um deles e torná-los intercambiáveis. O Strategy permite que o algoritmo varie independentemente dos clientes que o utilizam. Em vez de ter uma classe com múltiplos algoritmos implementados (possivelmente com if/else), cada algoritmo é extraído para sua própria classe (uma "estratégia"). O objeto principal (contexto) pode então ser configurado com a estratégia que ele deve usar.
+
+Quando usar?
+
+Quando você tem várias maneiras de realizar uma tarefa e quer que o cliente escolha a forma de execução.
+
+Quando você quer trocar o algoritmo utilizado em tempo de execução.
