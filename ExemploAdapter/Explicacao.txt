@@ -1,0 +1,18 @@
+IExcelFormatter.java: É a interface do sistema Legacy. Define as regras de como o formatador de Excel original funcionava.
+
+ExcelFormatter.java (Adaptee): É a classe antiga que já existia.
+Ela contém a lógica complexa de formatação que queremos reaproveitar, mas que tem a interface incompatível com o sistema novo.
+
+IPDFFormatter.java (Target): É a interface do sistema novo.
+Define o padrão PDF que o seu programa principal espera utilizar agora.
+
+
+PDFFormatter.java: É a classe nova padrão. 
+Ela implementa a interface IPDFFormatter nativamente, sem precisar de adaptação.
+
+Adapter.java (Adaptador): Ele implementa a interface nova IPDFFormatter para "enganar" o sistema,
+mas por dentro ela guarda uma instância da classe ExcelFormatter e atribui o trabalho para ela.
+
+
+Executa.java (Cliente): É o programa principal. Ele interage apenas com a interface IPDFFormatter,
+tratando tanto o objeto novo quanto o adaptador da mesma maneira, basicamente polimorfismo.
